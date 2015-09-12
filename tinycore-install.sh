@@ -1,5 +1,3 @@
-
-
 ###############################################################################
 # This script is a very initial setup for a micro core linux installation.
 # 1) Download the Core ISO from http://tinycorelinux.net/downloads.html .
@@ -13,14 +11,16 @@
 # Credits:
 # Author: paulo.amaral(a)gmail(dot)com - https://github.com/paulera
 # Based on @smileymattj video: http://www.youtube.com/watch?v=0QMY3V5XLj8
-
+#
+# Download: wget http://bit.ly/tinycore-install
+#           (requires openssl for https)
+#
 
 #!/bin/sh
 
-
-echo "This will setup your partitions, install kernel and grub, and any existing"
-echo "data will be lost. Just make sure you run this first, from the bootable ISO,"
-echo "and you should be fine."
+echo "This will setup a partition, install kernel and grub, so any existing"
+echo "data will be lost. If you are runnig this in a clean environment, from"
+echo "the bootable ISO, you should be fine."
 echo
 read -p "Continue (y/n)? " -n 1 -r
 
