@@ -1,4 +1,4 @@
-###############################################################################
+#
 # This script installs the tinycore linux from a bootable ISO.
 #
 # 1) Download the Core ISO from http://tinycorelinux.net/downloads.html (11 MB)
@@ -28,80 +28,92 @@
 #!/bin/sh
 
 step() {
+	echo -e "\e[33m+++ $1\e[0m";
+}
+
+green() {
 	echo -e "\e[32m$1\e[0m";
 }
 
+pause() {
+	echo -e "\e1;30mPress [return] for next step...\e[0m"
+
+}
+
+echo
 echo "This will setup your partitions, install kernel and grub, and any"
 echo "existing data will be lost. Just make sure you run this in a clean"
 echo "environment, from the bootable ISO, and you should be fine."
 echo
 read -p "Continue (y/n)? " -n 1 -r
+echo
+echo
 
 if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
-	step "\n###### Create partition ######\n"
+	step "Create partition\n"
 	set -x
 	sudo sh -c "echo -e \"n\\np\\n1\\n\\n\\n\\n\\na\\n1\\nw\" | fdisk /dev/sda"
 	{ set +x; } 2>/dev/null
 
-	read
+	pause
 
-	step "\n###### Format partition ######\n"
+	step "Format partition\n"
 	set -x
 	sudo mkfs.ext4 /dev/sda1
 	sudo rebuildfstab
 	{ set +x; } 2>/dev/null
 
-	read
+	pause
 
-	step "\n###### Mount Disk and CD ######\n"
+	step "Mount Disk and CD\n"
 	set -x
 	sudo mount /mnt/sda1
 	sudo mount /mnt/sr0
 	{ set +x; } 2>/dev/null
 
-	read
+	pause
 
-	step "\n###### Create directories ######\n"
+	step "Create directories\n"
 	set -x
 	sudo mkdir -p /mnt/sda1/boot/grub
 	sudo mkdir -p /mnt/sda1/tce/optional
 	{ set +x; } 2>/dev/null
 
-	read
+	pause
 
-	step "\n###### Copy kernel ######\n"
+	step "Copy kernel\n"
 	set -x
 	sudo cp -p /mnt/sr0/boot/core.gz /mnt/sda1/boot/
 	sudo cp -p /mnt/sr0/boot/vmlinuz /mnt/sda1/boot/
 	{ set +x; } 2>/dev/null
 
-	read
+	pause
 
-	step "\n###### Install grub ######\n"
+	step "Install grub\n"
 	set -x
 	tce-load -w -i grub-0.97-splash.tcz
 	sudo cp -p /usr/lib/grub/i386-pc/* /mnt/sda1/boot/grub/
 	sudo touch /mnt/sda1/tce/mydata.tgz
 	{ set +x; } 2>/dev/null
 
-	read
+	pause
 
-	step "\n###### Create menu for grub ######\n"
+	step "Create menu for grub\n"
 	set -x
 	sudo sh -c "echo -e \"default 0\\ntimeout 0\\ntitle MicroCore\\nkernel /boot/vmlinuz quiet\\ninitrd /boot/core.gz\" > /mnt/sda1/boot/grub/menu.lst"
 	{ set +x; } 2>/dev/null
 
-	read
+	pause
 
-	step "\n###### Create master boot record in partition ######\n"
+	step "Create master boot record in partition\n"
 	set -x
 	sudo sh -c "echo -e \"root (hd0,0)\\nsetup (hd0)\\nquit\" | grub --batch"
 	{ set +x; } 2>/dev/null
 
-	read
+	pause
 
-	step "\n###### Done! ######\n"
+	step "Done!\n"
 	echo "Script finished. Remove ISO from drive and reboot."
 
 fi
