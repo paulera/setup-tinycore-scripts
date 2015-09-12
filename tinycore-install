@@ -7,7 +7,7 @@
 #
 # 2) Create a virtual machine and boot the ISO. (press [Return] when asked)
 #
-# 3) Download this script:
+# 3) Download and run this script:
 #
 #         tce-load -w -i openssl.tcz                  <- enable ssl (for https)
 #         wget git.io/tinycore-install                <- download script
@@ -26,7 +26,7 @@
 # Download: wget http://bit.ly/tinycore-install
 #           (requires openssl for https)
 #
-###############################################################################
+################################################################ version 1.0b # 
 
 #!/bin/sh
 
