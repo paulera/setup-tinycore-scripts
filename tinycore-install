@@ -28,7 +28,7 @@
 #!/bin/sh
 
 step() {
-	echo -e "\e[33m+++ $1\e[0m";
+	echo -e "\e[1;36m+++ $1\e[0m";
 }
 
 ok() {
@@ -37,8 +37,9 @@ ok() {
 
 err() {
 	{ set +x; } 2>/dev/null
-	echo -e "\n\n\e[32mERROR! See output for details.\e[0m";
-	echo -e "\n\nInstallation aborted.\n\n";
+	echo -e "\n\e[1;31mERROR! Check last command output for details.\e[0m";
+	echo -e "\nInstallation aborted.\n";
+	exit 1
 }
 
 pause() {
