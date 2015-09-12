@@ -21,12 +21,9 @@
 # 
 # Credits:
 # By paulo.amaral(a)gmail(dot)com - https://github.com/paulera
-# Based on @smileymattj video: http://www.youtube.com/watch?v=0QMY3V5XLj8
+# Based on @smileymattj tutorial: http://www.youtube.com/watch?v=0QMY3V5XLj8
 #
-# Download: wget http://bit.ly/tinycore-install
-#           (requires openssl for https)
-#
-################################################################ version 1.0b # 
+############################################################ version 1.0b #####
 
 #!/bin/sh
 
