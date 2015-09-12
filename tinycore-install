@@ -1,5 +1,7 @@
+###############################################################################
 #
-# This script installs the tinycore linux from a bootable ISO.
+# This script installs the tinycore linux from a the Core Bootable ISO. It is
+# a very tipical installation, using the whole disk as ext4 primary partition.
 #
 # 1) Download the Core ISO from http://tinycorelinux.net/downloads.html (11 MB)
 #
@@ -8,7 +10,7 @@
 # 3) Download this script:
 #
 #         tce-load -w -i openssl.tcz                  <- enable ssl (for https)
-#         wget http://bit.ly/tinycore-install         <- download script*
+#         wget git.io/tinycore-install                <- download script
 #         sh tinycore-install                         <- run
 #
 # 3) What tinycore-install does:
@@ -24,6 +26,7 @@
 # Download: wget http://bit.ly/tinycore-install
 #           (requires openssl for https)
 #
+###############################################################################
 
 #!/bin/sh
 
@@ -32,7 +35,7 @@ step() {
 }
 
 ok() {
-	echo -e "\e[32m[success] \e[0m";
+	echo -e "\e[32m[success] \e[0m\n";
 }
 
 err() {
@@ -43,7 +46,7 @@ err() {
 }
 
 pause() {
-	echo -e "\n\e[1;30mPress [return] for next step...\e[0m"
+	echo -e "\e[1;30mPress [return] for next step...\e[0m\n"
 	read
 }
 
