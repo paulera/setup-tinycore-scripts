@@ -31,13 +31,19 @@ step() {
 	echo -e "\e[33m+++ $1\e[0m";
 }
 
-green() {
-	echo -e "\e[32m$1\e[0m";
+ok() {
+	echo -e "\e[32m[success] \e[0m";
+}
+
+err() {
+	{ set +x; } 2>/dev/null
+	echo -e "\n\n\e[32mERROR! See output for details.\e[0m";
+	echo -e "\n\nInstallation aborted.\n\n";
 }
 
 pause() {
-	echo -e "\e1;30mPress [return] for next step...\e[0m"
-
+	echo -e "\e[1;30mPress [return] for next step...\e[0m"
+	read
 }
 
 echo
@@ -53,8 +59,9 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	step "Create partition\n"
 	set -x
-	sudo sh -c "echo -e \"n\\np\\n1\\n\\n\\n\\n\\na\\n1\\nw\" | fdisk /dev/sda"
+	sudo sh -c "echo -e \"n\\np\\n1\\n\\n\\n\\n\\na\\n1\\nw\" | fdisk /dev/sda" || err
 	{ set +x; } 2>/dev/null
+	ok
 
 	pause
 
@@ -63,6 +70,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	sudo mkfs.ext4 /dev/sda1
 	sudo rebuildfstab
 	{ set +x; } 2>/dev/null
+	ok
 
 	pause
 
@@ -71,6 +79,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	sudo mount /mnt/sda1
 	sudo mount /mnt/sr0
 	{ set +x; } 2>/dev/null
+	ok
 
 	pause
 
@@ -79,6 +88,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	sudo mkdir -p /mnt/sda1/boot/grub
 	sudo mkdir -p /mnt/sda1/tce/optional
 	{ set +x; } 2>/dev/null
+	ok
 
 	pause
 
@@ -87,6 +97,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	sudo cp -p /mnt/sr0/boot/core.gz /mnt/sda1/boot/
 	sudo cp -p /mnt/sr0/boot/vmlinuz /mnt/sda1/boot/
 	{ set +x; } 2>/dev/null
+	ok
 
 	pause
 
@@ -96,6 +107,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	sudo cp -p /usr/lib/grub/i386-pc/* /mnt/sda1/boot/grub/
 	sudo touch /mnt/sda1/tce/mydata.tgz
 	{ set +x; } 2>/dev/null
+	ok
 
 	pause
 
@@ -103,6 +115,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	set -x
 	sudo sh -c "echo -e \"default 0\\ntimeout 0\\ntitle MicroCore\\nkernel /boot/vmlinuz quiet\\ninitrd /boot/core.gz\" > /mnt/sda1/boot/grub/menu.lst"
 	{ set +x; } 2>/dev/null
+	ok
 
 	pause
 
@@ -110,6 +123,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	set -x
 	sudo sh -c "echo -e \"root (hd0,0)\\nsetup (hd0)\\nquit\" | grub --batch"
 	{ set +x; } 2>/dev/null
+	ok
 
 	pause
 
