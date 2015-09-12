@@ -42,7 +42,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	step "\n\n\n###### Create partition ######\n\n"
 	set -x
-	echo -e "n\np\n1\n\n\n\n\na\n1\nw" | fdisk /dev/sda
+	sudo sh -c "echo -e \"n\\np\\n1\\n\\n\\n\\n\\na\\n1\\nw\" | fdisk /dev/sda"
 	set +x
 
 	read
