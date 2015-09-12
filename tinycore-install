@@ -38,8 +38,8 @@ echo "environment, from the bootable ISO, and you should be fine."
 echo
 read -p "Continue (y/n)? " -n 1 -r
 
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
+
 	step "\n\n\n###### Create partition ######\n\n"
 	set -x
 	echo -e "n\np\n1\n\n\n\n\na\n1\nw" | fdisk /dev/sda
