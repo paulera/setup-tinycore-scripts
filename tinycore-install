@@ -1,16 +1,16 @@
-##[ CORE-INSTALL ]#############################################################
+##[ TINYCORE-INSTALL ]#########################################################
 #
 # This script installs the tinycore linux from a bootable ISO.
 #
 # 1) Download the Core ISO from http://tinycorelinux.net/downloads.html (11 MB)
 #
-# 2) Create a virtual machine and boot the ISO. (press [Return] when asked)
+# 2) Boot the ISO in a computer or new virtual machine.
 #
-# 3) Download this script:
+# 3) Download the tinycore-install script:
 #
 #         tcd-load -w -o openssl.tcz                  <- enable ssl (for https)
-#         wget http://bit.ly/core-install             <- download script*
-#         chmod +x tinycore-install                   <- make it executable
+#         wget http://git.io/tinycore-install         <- download script
+#         chmod +x tinycore-install                   <- make executable
 #         ./tinycore-install                          <- run
 #
 # 3) What tinycore-install does:
@@ -22,7 +22,7 @@
 # By paulo.amaral(a)gmail(dot)com - https://github.com/paulera
 # Based on @smileymattj video: http://www.youtube.com/watch?v=0QMY3V5XLj8
 #
-# Download: wget http://bit.ly/core-install
+# Download: wget http://git.io/tinycore-install
 #           (requires openssl - rtfm)
 #
 
