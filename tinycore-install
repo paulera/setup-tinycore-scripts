@@ -7,7 +7,7 @@
 #
 # 3) Download this script:
 #
-#         tcd-load -w -o openssl.tcz                  <- enable ssl (for https)
+#         tce-load -w -i openssl.tcz                  <- enable ssl (for https)
 #         wget http://bit.ly/tinycore-install         <- download script*
 #         sh tinycore-install                         <- run
 #
@@ -43,7 +43,7 @@ err() {
 }
 
 pause() {
-	echo -e "\e[1;30mPress [return] for next step...\e[0m"
+	echo -e "\n\e[1;30mPress [return] for next step...\e[0m"
 	read
 }
 
@@ -58,7 +58,7 @@ echo
 
 if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
-	step "Create partition\n"
+	step "1 of 8. Create partition\n"
 	set -x
 	sudo sh -c "echo -e \"n\\np\\n1\\n\\n\\n\\n\\na\\n1\\nw\" | fdisk /dev/sda" || err
 	{ set +x; } 2>/dev/null
@@ -66,7 +66,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
-	step "Format partition\n"
+	step "2 of 8. Format partition\n"
 	set -x
 	sudo mkfs.ext4 /dev/sda1
 	sudo rebuildfstab
@@ -75,7 +75,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
-	step "Mount Disk and CD\n"
+	step "3 of 8. Mount Disk and CD\n"
 	set -x
 	sudo mount /mnt/sda1
 	sudo mount /mnt/sr0
@@ -84,7 +84,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
-	step "Create directories\n"
+	step "4 of 8. Create directories\n"
 	set -x
 	sudo mkdir -p /mnt/sda1/boot/grub
 	sudo mkdir -p /mnt/sda1/tce/optional
@@ -93,7 +93,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
-	step "Copy kernel\n"
+	step "5 of 8. Copy kernel\n"
 	set -x
 	sudo cp -p /mnt/sr0/boot/core.gz /mnt/sda1/boot/
 	sudo cp -p /mnt/sr0/boot/vmlinuz /mnt/sda1/boot/
@@ -102,7 +102,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
-	step "Install grub\n"
+	step "7 of 8. Install grub\n"
 	set -x
 	tce-load -w -i grub-0.97-splash.tcz
 	sudo cp -p /usr/lib/grub/i386-pc/* /mnt/sda1/boot/grub/
@@ -112,7 +112,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
-	step "Create menu for grub\n"
+	step "8 of 8. Create menu for grub\n"
 	set -x
 	sudo sh -c "echo -e \"default 0\\ntimeout 0\\ntitle MicroCore\\nkernel /boot/vmlinuz quiet\\ninitrd /boot/core.gz\" > /mnt/sda1/boot/grub/menu.lst"
 	{ set +x; } 2>/dev/null
@@ -129,6 +129,6 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	pause
 
 	step "Done!\n"
-	echo "Script finished. Remove ISO from drive and reboot."
+	echo -e "Script finished. Remove ISO from drive and reboot.\n"
 
 fi
