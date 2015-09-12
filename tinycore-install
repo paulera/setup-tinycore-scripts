@@ -46,7 +46,7 @@ err() {
 }
 
 pause() {
-	echo -e "\e[1;30mPress [return] for next step...\e[0m\n"
+	echo -e "\e[1;30mPress [return] for next step...\e[0m"
 	read
 }
 
