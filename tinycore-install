@@ -58,7 +58,9 @@ echo
 
 if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
-	step "1 of 8. Create partition\n"
+	# ------------------------------------
+	step "1 of 9. Create partition\n"
+
 	set -x
 	sudo sh -c "echo -e \"n\\np\\n1\\n\\n\\n\\n\\na\\n1\\nw\" | fdisk /dev/sda" || err
 	{ set +x; } 2>/dev/null
@@ -66,53 +68,89 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
-	step "2 of 8. Format partition\n"
+	# ------------------------------------
+	step "2 of 9. Format partition\n"
+	
 	set -x
 	sudo mkfs.ext4 /dev/sda1
+	{ set +x; } 2>/dev/null
+	ok
+
+	set -x
 	sudo rebuildfstab
 	{ set +x; } 2>/dev/null
 	ok
 
 	pause
 
-	step "3 of 8. Mount Disk and CD\n"
+	# ------------------------------------
+	step "3 of 9. Mount Disk and CD\n"
+	
 	set -x
 	sudo mount /mnt/sda1
+	{ set +x; } 2>/dev/null
+	ok
+
+	set -x
 	sudo mount /mnt/sr0
 	{ set +x; } 2>/dev/null
 	ok
 
 	pause
 
-	step "4 of 8. Create directories\n"
+	# ------------------------------------
+	step "4 of 9. Create directories\n"
+
 	set -x
 	sudo mkdir -p /mnt/sda1/boot/grub
+	{ set +x; } 2>/dev/null
+	ok
+
+	set -x
 	sudo mkdir -p /mnt/sda1/tce/optional
 	{ set +x; } 2>/dev/null
 	ok
 
 	pause
 
-	step "5 of 8. Copy kernel\n"
+	# ------------------------------------
+	step "5 of 9. Copy kernel\n"
+
 	set -x
 	sudo cp -p /mnt/sr0/boot/core.gz /mnt/sda1/boot/
+	{ set +x; } 2>/dev/null
+	ok
+
+	set -x
 	sudo cp -p /mnt/sr0/boot/vmlinuz /mnt/sda1/boot/
 	{ set +x; } 2>/dev/null
 	ok
 
 	pause
 
-	step "7 of 8. Install grub\n"
+	# ------------------------------------
+	step "7 of 9. Install grub\n"
+	
 	set -x
 	tce-load -w -i grub-0.97-splash.tcz
+	{ set +x; } 2>/dev/null
+	ok
+
+	set -x
 	sudo cp -p /usr/lib/grub/i386-pc/* /mnt/sda1/boot/grub/
+	{ set +x; } 2>/dev/null
+	ok
+
+	set -x
 	sudo touch /mnt/sda1/tce/mydata.tgz
 	{ set +x; } 2>/dev/null
 	ok
 
 	pause
 
-	step "8 of 8. Create menu for grub\n"
+	# ------------------------------------
+	step "8 of 9. Create menu for GRUB\n"
+
 	set -x
 	sudo sh -c "echo -e \"default 0\\ntimeout 0\\ntitle MicroCore\\nkernel /boot/vmlinuz quiet\\ninitrd /boot/core.gz\" > /mnt/sda1/boot/grub/menu.lst"
 	{ set +x; } 2>/dev/null
@@ -120,7 +158,9 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
-	step "Create master boot record in partition\n"
+	# ------------------------------------
+	step "9 of 9. Create master boot record\n"
+
 	set -x
 	sudo sh -c "echo -e \"root (hd0,0)\\nsetup (hd0)\\nquit\" | grub --batch"
 	{ set +x; } 2>/dev/null
@@ -128,6 +168,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	pause
 
+	# ------------------------------------
 	step "Done!\n"
 	echo -e "Script finished. Remove ISO from drive and reboot.\n"
 
