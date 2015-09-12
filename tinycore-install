@@ -45,7 +45,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	sudo sh -c "echo -e \"n\\np\\n1\\n\\n\\n\\n\\na\\n1\\nw\" | fdisk /dev/sda"
 	set +x
 
-	read
+	read 
 
 	step "\n\n\n###### Format partition ######\n\n"
 	set -x
