@@ -64,7 +64,7 @@ step "Update persistence list including passwd and shadow files\\n"
 
 if [ ! -z "$(cat /opt/.filetool.lst | grep etc/passwd)" ]
 then
-	echo "etc/passwd already in /opt/.filetool.lst\n"
+	echo -e "etc/passwd already in /opt/.filetool.lst\n"
 else
   set -x
   sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
@@ -74,7 +74,7 @@ fi
 
 if [ ! -z "$(cat /opt/.filetool.lst | grep etc/shadow)" ]
 then
-	echo "etc/shadow already in /opt/.filetool.lst\n"
+	echo -e "etc/shadow already in /opt/.filetool.lst\n"
 else
   set -x
   sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
@@ -113,11 +113,10 @@ fi
 step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin\\n"
 for i in /home/* ; do
 	if [ -d $i ]; then
-
 		echo Updating .ashrc in $i
 		set -x
-		cat $i/.ashrc | grep -v "# PATH change by tinycore-scripts" > $i/.ashrc
-		echo -e "\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH    # PATH change by tinycore-scripts" >> $i/.ashrc || err
+		sudo sed -i '/^.*# PATH change by tinycore-scripts.*/d' $i
+		echo -e "\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH      # PATH change by tinycore-scripts" >> $i/.ashrc || err
 		{ set +x; } 2>/dev/null
 		ok	
 	fi
