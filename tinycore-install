@@ -210,7 +210,7 @@ sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
 
 	echo "Add to \$PATH: ~/bin;/opt/sbin;/opt/bin"
 	set -x
-	sudo sh -c 'echo "export PATH=~/bin;/opt/sbin;/opt/bin;\$PATH >> /opt/bootlocal.sh' || err
+	sudo sh -c 'echo "export PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> /opt/bootlocal.sh' || err
 	{ set +x; } 2>/dev/null
 	ok
 
