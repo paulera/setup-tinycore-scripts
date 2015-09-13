@@ -168,6 +168,8 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	{ set +x; } 2>/dev/null
 	ok
 
+	pause
+
 	# ------------------------------------
 	step "10 of $TOTAL. Tunning\n"
 
@@ -189,7 +191,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	sudo sh -c 'echo "#!/bin/sh
 /usr/bin/filetool.sh -b
 /opt/shutdown.sh
-sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin' || err
+sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
 	{ set +x; } 2>/dev/null
 	ok
 
@@ -198,11 +200,11 @@ sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin' || err
 	sudo sh -c 'echo "#!/bin/sh
 /usr/bin/filetool.sh -b
 /opt/shutdown.sh
-sudo /usr/bin/exitcheck.sh reboot" > /opt/bin' || err
+sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
 	{ set +x; } 2>/dev/null
 	ok
 
-	echo "Add to \$PATH ~/bin;/opt/sbin;/opt/bin"
+	echo "Add to \$PATH: ~/bin;/opt/sbin;/opt/bin"
 	set -x
 	export PATH=~/bin;/opt/sbin;/opt/bin;$PATH
 	sudo sh -c 'echo "export PATH=~/bin;/opt/sbin;/opt/bin;$PATH" >> /opt/bootlocal.sh' || err
