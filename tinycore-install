@@ -56,7 +56,7 @@ read -p "Continue (y/n)? " -n 1 -r
 echo
 echo
 
-TOTAL = 10
+TOTAL=10
 
 if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
@@ -209,7 +209,7 @@ sudo /usr/bin/exitcheck.sh reboot" > /opt/bin' || err
 	sudo chown root:staff /opt/sbin || err
 	sudo chmod -R 750 /opt/sbin || err
 	{ set +x; } 2>/dev/null
-	ok	
+	ok
 
 	echo Update persistence list
 	set -x
