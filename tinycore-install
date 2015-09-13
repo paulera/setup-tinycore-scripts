@@ -222,6 +222,12 @@ sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
 	{ set +x; } 2>/dev/null
 	ok
 
+	echo "Backup changes"
+	set -x
+	filetool.sh -b
+	{ set +x; } 2>/dev/null
+	ok
+
 	pause
 
 	# ------------------------------------
