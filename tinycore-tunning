@@ -111,16 +111,17 @@ fi
 
 #------------------------------------------------------------------------------
 step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin\\n"
-set -x
 for i in /home/* ; do
 	if [ -d $i ]; then
+
 		echo Updating .ashrc in $i
-		echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> $i/.ashrc || err
+		set -x
+		cat $i/.ashrc | grep -v "# PATH change by tinycore-scripts" > $i/.ashrc
+		echo -e "\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH    # PATH change by tinycore-scripts" >> $i/.ashrc || err
+		{ set +x; } 2>/dev/null
+		ok	
 	fi
 done
-
-{ set +x; } 2>/dev/null
-ok
 
 #------------------------------------------------------------------------------
 step "Create script: /opt/bin/shutdown (with persistence support)\\n"
