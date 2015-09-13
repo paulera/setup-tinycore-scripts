@@ -1,0 +1,98 @@
+###############################################################################
+#
+# This does some tunning in a Tiny Core Linux installation:
+#
+# Download and run this script:
+#
+#         tce-load -w -i openssl.tcz                  <- enable ssl (for https)
+#         wget git.io/tinycore-tunning                <- download script
+#         sh tinycore-tunning                         <- run
+#
+# What tinycore-tunning does:
+#    - Setup persistence, including user accounts
+#    - Create /opt/bin and /opt/sbin to store custom scripts
+#    - Create the scripts 'shutdown' and 'reboot' (they backup before turn off)
+# 
+# Credits:
+# By paulo.amaral(a)gmail(dot)com - https://github.com/paulera
+#
+###############################################################################
+
+#!/bin/sh
+
+step() {
+	echo -e "\e[1;36m+++ $1\e[0m";
+}
+
+ok() {
+	echo -e "\e[32m[success] \e[0m\n";
+}
+
+err() {
+	{ set +x; } 2>/dev/null
+	echo -e "\n\e[1;31mERROR! Check last command output for details.\e[0m";
+	echo -e "\nInstallation aborted.\n";
+	exit 1
+}
+
+pause() {
+	echo -e "\e[1;30mPress [return] for next step...\e[0m"
+	read
+}
+
+echo
+
+echo "Creating /mnt/sda1/tce/mydata.tgz for persistence"
+set -x
+sudo touch /mnt/sda1/tce/mydata.tgz || err
+{ set +x; } 2>/dev/null
+ok
+
+echo "Update persistence list"
+set -x
+# persist users accounts
+sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
+sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
+{ set +x; } 2>/dev/null
+ok
+
+echo "Creating /opt/bin and /opt/sbin for custom global scripts (persisted)"
+set -x
+sudo mkdir /opt/sbin || err
+sudo chown root:staff /opt/sbin || err
+sudo chmod -R 740 /opt/sbin || err
+sudo mkdir /opt/bin || err
+sudo chown root:staff /opt/bin || err
+sudo chmod -R 770 /opt/bin || err
+{ set +x; } 2>/dev/null
+ok
+
+echo "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin"
+set -x
+sudo sh -c 'echo "export PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> /opt/bootlocal.sh' || err
+{ set +x; } 2>/dev/null
+ok
+
+echo "Create script: /opt/sbin/shutdown (with persistence support)"
+set -x
+sudo sh -c 'echo "#!/bin/sh
+sudo /usr/bin/filetool.sh -b
+sudo /opt/shutdown.sh
+sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
+{ set +x; } 2>/dev/null
+ok
+
+echo "Create script: /opt/sbin/reboot (with persistence support)"
+set -x
+sudo sh -c 'echo "#!/bin/sh
+sudo /usr/bin/filetool.sh -b
+sudo /opt/shutdown.sh
+sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
+{ set +x; } 2>/dev/null
+ok
+
+echo "Backup changes"
+set -x
+filetool.sh -b
+{ set +x; } 2>/dev/null
+ok
