@@ -1,9 +1,31 @@
 #!/bin/sh
 
 BASE_URL=https://raw.githubusercontent.com/paulera/setup-tinycore-scripts/master
+USER=paulera
+REPO=setup-tinycore-scripts
 
-# tce-load -w -i openssl.tcz
-for i in $(wget -qO- https://api.github.com/repos/paulera/setup-tinycore-scripts/contents/ | cat | grep \"download_url\" | sed 's/[ ]\+"download_url": "\(.*\)"[,]*/\1/g'); do
-	wget $i
+TIMESTAMP=`date +%s`
+TMP=tmp_download_$TIMESTAMP
+
+echo
+echo "This script does NOT download tinycore-install."
+echo
+
+if [ ! -z $(command -v tce-load) ]; then
+	tce-load -w -i openssl.tcz;
+fi
+
+mkdir $TMP
+cd $TMP
+for i in `wget -qO- https://api.github.com/repos/$USER/$REPO/contents/ | cat | \
+	grep \"download_url\" | \
+	grep -i -v readme.md | \
+	grep -i -v tinycore-install | \
+	grep -i -v tinycore-scripts-download | \
+	sed 's/[ ]\+"download_url": "\(.*\)"[,]*/\1/g' \
+	`; do
+	echo "Downloading $i ..."
+	wget -q $i
 done
-#wget $BASE_URL/tin
+cd ..
+cp $TMP/* . && rm -r $TMP
