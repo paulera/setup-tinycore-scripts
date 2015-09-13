@@ -43,7 +43,7 @@ pause() {
 echo
 
 #------------------------------------------------------------------------------
-step "Creating /mnt/sda1/tce/mydata.tgz for persistence"
+step "Creating /mnt/sda1/tce/mydata.tgz for persistence\n"
 if [ -f /mnt/sda1/tce/mydata.tgz ]
 then
 	echo -e "/mnt/sda1/tce/mydata.tgz already exists.\n";
@@ -55,29 +55,29 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Update persistence list"
-if [ -z $(cat /opt/.filetool.lst | grep etc/passwd) ]
+step "Update persistence list\n"
+if [ -z "$(cat /opt/.filetool.lst | grep etc/passwd)" ]
 then
 	set -x
 	sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
 	{ set +x; } 2>/dev/null
 	ok
 else
-	echo etc/passwd already included in /opt/.filetool.lst
+	echo "etc/passwd already included in /opt/.filetool.lst\n"
 fi
 
-if [ -z $(cat /opt/.filetool.lst | grep etc/shadow) ]
+if [ -z "$(cat /opt/.filetool.lst | grep etc/shadow)" ]
 then
 	set -x
 	sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
 	{ set +x; } 2>/dev/null
 	ok
 else
-	echo etc/shadow already included in /opt/.filetool.lst
+	echo "etc/shadow already included in /opt/.filetool.lst\n"
 fi
 
 #------------------------------------------------------------------------------
-step "Creating /opt/bin and /opt/sbin for custom global scripts (persisted)"
+step "Creating /opt/bin and /opt/sbin for custom global scripts (persisted)\n"
 
 if [ -d /opt/sbin ]
 then
@@ -88,6 +88,7 @@ else
 	sudo chown root:staff /opt/sbin || err
 	sudo chmod -R 740 /opt/sbin || err
 	{ set +x; } 2>/dev/null
+	ok
 fi
 
 if [ -d /opt/bin ]
@@ -99,17 +100,18 @@ else
 	sudo chown root:staff /opt/bin || err
 	sudo chmod -R 770 /opt/bin || err
 	{ set +x; } 2>/dev/null
+	ok
 fi
 
 #------------------------------------------------------------------------------
-step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin"
+step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin\n"
 set -x
 sudo sh -c 'echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> ~/.ashrc' || err
 { set +x; } 2>/dev/null
 ok
 
 #------------------------------------------------------------------------------
-step "Create script: /opt/sbin/shutdown (with persistence support)"
+step "Create script: /opt/sbin/shutdown (with persistence support)\n"
 if [ -f /opt/sbin/shutdown ]
 then
 	echo -e "/opt/bin/shutdown already exists.\n";
@@ -124,7 +126,7 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Create script: /opt/sbin/reboot (with persistence support)"
+step "Create script: /opt/sbin/reboot (with persistence support)\n"
 if [ -f /opt/sbin/reboot ]
 then
 	echo -e "/opt/bin/reboot already exists.\n";
