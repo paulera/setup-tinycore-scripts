@@ -190,7 +190,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	{ set +x; } 2>/dev/null
 	ok
 
-	echo "Script: /opt/sbin/shutdown (with persistence)"
+	echo "Create script: /opt/sbin/shutdown (with persistence)"
 	set -x
 	sudo sh -c 'echo "#!/bin/sh
 /usr/bin/filetool.sh -b
@@ -199,7 +199,7 @@ sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
 	{ set +x; } 2>/dev/null
 	ok
 
-	echo "Script: /opt/sbin/reboot (with persistence)"
+	echo "Create script: /opt/sbin/reboot (with persistence)"
 	set -x
 	sudo sh -c 'echo "#!/bin/sh
 /usr/bin/filetool.sh -b
@@ -211,7 +211,7 @@ sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
 	echo "Add to \$PATH: ~/bin;/opt/sbin;/opt/bin"
 	set -x
 	export PATH="~/bin;/opt/sbin;/opt/bin;$PATH"
-	sudo sh -c 'echo "export PATH=\"~/bin;/opt/sbin;/opt/bin;$PATH\"" >> /opt/bootlocal.sh' || err
+	sudo sh -c 'echo "export PATH=\"~/bin;/opt/sbin;/opt/bin;\$PATH\"" >> /opt/bootlocal.sh' || err
 	{ set +x; } 2>/dev/null
 	ok
 
