@@ -58,7 +58,7 @@ echo
 
 if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
-	TOTAL=10
+	TOTAL=9
 
 	# ------------------------------------
 	step "1 of $TOTAL. Create partition\n"
