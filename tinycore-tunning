@@ -115,7 +115,7 @@ set -x
 for i in /home; do
 	echo Updating .ashrc in /home/$i
 	echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> /home/$i/.ashrc || err
-loop
+done
 
 { set +x; } 2>/dev/null
 ok
