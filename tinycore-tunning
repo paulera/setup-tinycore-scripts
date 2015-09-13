@@ -64,7 +64,7 @@ step "Update persistence list including passwd and shadow files\\n"
 
 if [ ! -z "$(cat /opt/.filetool.lst | grep etc/passwd)" ]
 then
-	echo "etc/passwd already in /opt/.filetool.lst\\n"
+	echo "etc/passwd already in /opt/.filetool.lst\n"
 else
   set -x
   sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
@@ -74,7 +74,7 @@ fi
 
 if [ ! -z "$(cat /opt/.filetool.lst | grep etc/shadow)" ]
 then
-	echo "etc/shadow already in /opt/.filetool.lst\\n"
+	echo "etc/shadow already in /opt/.filetool.lst\n"
 else
   set -x
   sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
