@@ -113,14 +113,43 @@ fi
 step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin\\n"
 for i in /home/* ; do
 	if [ -d $i ]; then
-		echo Updating .ashrc in $i
+		echo Updating $i/.ashrc
 		set -x
 		sudo sed -i '/^.*# PATH change by tinycore-scripts.*/d' $i/.ashrc
-		echo -e "\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH      # PATH change by tinycore-scripts" >> $i/.ashrc || err
+  echo -e "\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH      # PATH change by tinycore-scripts" >> $i/.ashrc || err
 		{ set +x; } 2>/dev/null
-		ok	
+		ok
 	fi
 done
+
+if [ -f /etc/skel/.ashrc.original ]; then
+  echo "Creating persistent copy (as backup): /etc/skel/.ashrc.original"
+  set -x
+  sudo cp /etc/skel/.ashrc /etc/skel/.ashrc.original
+  echo etc/skel/.ashrc.original >> /opt/.filetools.lst
+  /usr/bin/filetools.sh -b
+  { set +x; } 2>/dev/null
+  ok
+fi
+
+if [ ! -z "$(cat /etc/skel/.ashrc | grep \"# PATH change by tinycore-scripts\")" ]
+then
+	echo "Removing old entry fron /etc/skel/.ashrc"
+	set -x
+	sudo sed -i '/^.*# PATH change by tinycore-scripts.*/d' /etc/skel/.ashrc
+	{ set +x; } 2>/dev/null
+	ok
+fi
+
+if [ -z "$(cat /etc/skel/.ashrc | grep \"# PATH change by tinycore-scripts\")" ]
+then
+	echo "Updating /etc/skel/.ashrc"
+	set -x
+	sudo sh -c "echo -e \"\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH      # PATH change by tinycore-scripts\" >> /etc/skel/.ashrc" || err
+	{ set +x; } 2>/dev/null
+	ok
+fi
+
 
 #------------------------------------------------------------------------------
 step "Create script: /opt/bin/shutdown (with persistence support)\\n"
