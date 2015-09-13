@@ -181,8 +181,12 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	echo "Creating /opt/bin and /opt/sbin directories for custom scripts"
 	set -x
-	sudo mkdir /opt/bin || err
 	sudo mkdir /opt/sbin || err
+	sudo chown root:staff /opt/sbin || err
+	sudo chmod -R 750 /opt/sbin || err
+	sudo mkdir /opt/bin || err
+	sudo chown root:staff /opt/bin || err
+	sudo chmod -R 770 /opt/bin || err
 	{ set +x; } 2>/dev/null
 	ok
 
@@ -206,10 +210,8 @@ sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
 
 	echo "Add to \$PATH: ~/bin;/opt/sbin;/opt/bin"
 	set -x
-	export PATH=~/bin;/opt/sbin;/opt/bin;$PATH
-	sudo sh -c 'echo "export PATH=~/bin;/opt/sbin;/opt/bin;$PATH" >> /opt/bootlocal.sh' || err
-	sudo chown root:staff /opt/sbin || err
-	sudo chmod -R 750 /opt/sbin || err
+	export PATH="~/bin;/opt/sbin;/opt/bin;$PATH"
+	sudo sh -c 'echo "export PATH=\"~/bin;/opt/sbin;/opt/bin;$PATH\"" >> /opt/bootlocal.sh' || err
 	{ set +x; } 2>/dev/null
 	ok
 
