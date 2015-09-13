@@ -115,7 +115,7 @@ for i in /home/* ; do
 	if [ -d $i ]; then
 		echo Updating .ashrc in $i
 		set -x
-		sudo sed -i '/^.*# PATH change by tinycore-scripts.*/d' $i
+		sudo sed -i '/^.*# PATH change by tinycore-scripts.*/d' $i/.ashrc
 		echo -e "\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH      # PATH change by tinycore-scripts" >> $i/.ashrc || err
 		{ set +x; } 2>/dev/null
 		ok	
