@@ -112,9 +112,11 @@ fi
 #------------------------------------------------------------------------------
 step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin\\n"
 set -x
-for i in /home; do
-	echo Updating .ashrc in /home/$i
-	echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> /home/$i/.ashrc || err
+for i in /home/* ; do
+	if [ -d $i ]; then
+		echo Updating .ashrc in /home/$i
+		echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> /home/$i/.ashrc || err
+	fi
 done
 
 { set +x; } 2>/dev/null
