@@ -23,7 +23,7 @@
 # By paulo.amaral(a)gmail(dot)com - https://github.com/paulera
 # Based on @smileymattj tutorial: http://www.youtube.com/watch?v=0QMY3V5XLj8
 #
-############################################################ version 1.0b #####
+###############################################################################
 
 #!/bin/sh
 
@@ -154,7 +154,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	echo "        opt=sda1 home=sda1"
 
 	set -x
-	sudo sh -c 'echo -e "default 0\ntimeout 0\ntitle MicroCore\nkernel /boot/vmlinuz quiet opt=sda1 home=sda1\ninitrd /boot/core.gz" > /mnt/sda1/boot/grub/menu.lst'  || err
+	sudo sh -c 'echo -e "default 0\ntimeout 0\ntitle MicroCore\nkernel /boot/vmlinuz quiet opt=sda1 home=sda1\ninitrd /boot/core.gz" > /mnt/sda1/boot/grub/menu.lst' || err
 	{ set +x; } 2>/dev/null
 	ok
 
@@ -165,66 +165,6 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 
 	set -x
 	sudo sh -c 'echo -e "root (hd0,0)\nsetup (hd0)\nquit" | grub --batch' || err
-	{ set +x; } 2>/dev/null
-	ok
-
-	pause
-
-	# ------------------------------------
-	step "10 of $TOTAL. Tunning\n"
-
-	echo "Creating /mnt/sda1/tce/mydata.tgz for persistence"
-	set -x
-	sudo touch /mnt/sda1/tce/mydata.tgz || err
-	{ set +x; } 2>/dev/null
-	ok
-
-	echo "Creating /opt/bin and /opt/sbin directories for custom scripts"
-	set -x
-	sudo mkdir /opt/sbin || err
-	sudo chown root:staff /opt/sbin || err
-	sudo chmod -R 740 /opt/sbin || err
-	sudo mkdir /opt/bin || err
-	sudo chown root:staff /opt/bin || err
-	sudo chmod -R 770 /opt/bin || err
-	{ set +x; } 2>/dev/null
-	ok
-
-	echo "Create script: /opt/sbin/shutdown (with persistence)"
-	set -x
-	sudo sh -c 'echo "#!/bin/sh
-sudo /usr/bin/filetool.sh -b
-sudo /opt/shutdown.sh
-sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
-	{ set +x; } 2>/dev/null
-	ok
-
-	echo "Create script: /opt/sbin/reboot (with persistence)"
-	set -x
-	sudo sh -c 'echo "#!/bin/sh
-sudo /usr/bin/filetool.sh -b
-sudo /opt/shutdown.sh
-sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
-	{ set +x; } 2>/dev/null
-	ok
-
-	echo "Add to \$PATH: ~/bin;/opt/sbin;/opt/bin"
-	set -x
-	sudo sh -c 'echo "export PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> /opt/bootlocal.sh' || err
-	{ set +x; } 2>/dev/null
-	ok
-
-	echo "Update persistence list"
-	set -x
-	# persist users accounts
-	sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
-	sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
-	{ set +x; } 2>/dev/null
-	ok
-
-	echo "Backup changes"
-	set -x
-	filetool.sh -b
 	{ set +x; } 2>/dev/null
 	ok
 
