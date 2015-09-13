@@ -43,7 +43,7 @@ pause() {
 echo
 
 #------------------------------------------------------------------------------
-step "Creating /mnt/sda1/tce/mydata.tgz for persistence\n"
+step "Creating /mnt/sda1/tce/mydata.tgz for persistence\\n"
 if [ -f /mnt/sda1/tce/mydata.tgz ]
 then
 	echo -e "/mnt/sda1/tce/mydata.tgz already exists.\n";
@@ -55,7 +55,7 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Update persistence list\n"
+step "Update persistence list\\n"
 if [ -z "$(cat /opt/.filetool.lst | grep etc/passwd)" ]
 then
 	set -x
@@ -77,7 +77,7 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Creating /opt/bin and /opt/sbin for custom global scripts (persisted)\n"
+step "Creating /opt/bin and /opt/sbin for custom global scripts (persisted)\\n"
 
 if [ -d /opt/sbin ]
 then
@@ -104,14 +104,14 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin\n"
+step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin\\n"
 set -x
 sudo sh -c 'echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> ~/.ashrc' || err
 { set +x; } 2>/dev/null
 ok
 
 #------------------------------------------------------------------------------
-step "Create script: /opt/sbin/shutdown (with persistence support)\n"
+step "Create script: /opt/sbin/shutdown (with persistence support)\\n"
 if [ -f /opt/sbin/shutdown ]
 then
 	echo -e "/opt/bin/shutdown already exists.\n";
@@ -126,7 +126,7 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Create script: /opt/sbin/reboot (with persistence support)\n"
+step "Create script: /opt/sbin/reboot (with persistence support)\\n"
 if [ -f /opt/sbin/reboot ]
 then
 	echo -e "/opt/bin/reboot already exists.\n";
@@ -141,8 +141,11 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Backup changes"
+step "Backup changes\\n"
 set -x
 filetool.sh -b
 { set +x; } 2>/dev/null
 ok
+
+echo
+echo
