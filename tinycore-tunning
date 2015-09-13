@@ -112,8 +112,8 @@ sudo sh -c 'echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/
 ok
 
 #------------------------------------------------------------------------------
-step "Create script: /opt/sbin/shutdown (with persistence support)\\n"
-if [ -f /opt/sbin/shutdown ]
+step "Create script: /opt/bin/shutdown (with persistence support)\\n"
+if [ -f /opt/bin/shutdown ]
 then
 	echo -e "/opt/bin/shutdown already exists.\n";
 else
@@ -127,8 +127,8 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Create script: /opt/sbin/reboot (with persistence support)\\n"
-if [ -f /opt/sbin/reboot ]
+step "Create script: /opt/bin/reboot (with persistence support)\\n"
+if [ -f /opt/bin/reboot ]
 then
 	echo -e "/opt/bin/reboot already exists.\n";
 else
