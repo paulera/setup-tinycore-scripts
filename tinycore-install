@@ -193,8 +193,8 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	echo "Create script: /opt/sbin/shutdown (with persistence)"
 	set -x
 	sudo sh -c 'echo "#!/bin/sh
-/usr/bin/filetool.sh -b
-/opt/shutdown.sh
+sudo /usr/bin/filetool.sh -b
+sudo /opt/shutdown.sh
 sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
 	{ set +x; } 2>/dev/null
 	ok
@@ -202,8 +202,8 @@ sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
 	echo "Create script: /opt/sbin/reboot (with persistence)"
 	set -x
 	sudo sh -c 'echo "#!/bin/sh
-/usr/bin/filetool.sh -b
-/opt/shutdown.sh
+sudo /usr/bin/filetool.sh -b
+sudo /opt/shutdown.sh
 sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
 	{ set +x; } 2>/dev/null
 	ok
@@ -217,8 +217,8 @@ sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
 	echo "Update persistence list"
 	set -x
 	# persist users accounts
-	sudo echo etc/passwd >>/opt/.filetool.lst || err
-	sudo echo etc/shadow >>/opt/.filetool.lst || err
+	sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
+	sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
 	{ set +x; } 2>/dev/null
 	ok
 
