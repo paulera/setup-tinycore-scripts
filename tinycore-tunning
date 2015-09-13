@@ -42,56 +42,104 @@ pause() {
 
 echo
 
-echo "Creating /mnt/sda1/tce/mydata.tgz for persistence"
+#------------------------------------------------------------------------------
+step "Creating /mnt/sda1/tce/mydata.tgz for persistence"
+if [ -f /mnt/sda1/tce/mydata.tgz ]
+then
+	echo -e "/mnt/sda1/tce/mydata.tgz already exists.\n";
+else
+	set -x
+	sudo touch /mnt/sda1/tce/mydata.tgz || err
+	{ set +x; } 2>/dev/null
+	ok
+fi
+
+#------------------------------------------------------------------------------
+step "Update persistence list"
+if [ -z $(cat /opt/.filetool.lst | grep etc/passwd) ]
+then
+	set -x
+	sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
+	{ set +x; } 2>/dev/null
+	ok
+else
+	echo etc/passwd already included in /opt/.filetool.lst
+fi
+
+if [ -z $(cat /opt/.filetool.lst | grep etc/shadow) ]
+then
+	set -x
+	sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
+	{ set +x; } 2>/dev/null
+	ok
+else
+	echo etc/shadow already included in /opt/.filetool.lst
+fi
+
+#------------------------------------------------------------------------------
+step "Creating /opt/bin and /opt/sbin for custom global scripts (persisted)"
+
+if [ -d /opt/sbin ]
+then
+	echo "/opt/sbin already exists.";
+else
+	set -x
+	sudo mkdir /opt/sbin || err
+	sudo chown root:staff /opt/sbin || err
+	sudo chmod -R 740 /opt/sbin || err
+	{ set +x; } 2>/dev/null
+fi
+
+if [ -d /opt/bin ]
+then
+	echo -e "/opt/bin already exists.\n";
+else
+	set -x
+	sudo mkdir /opt/bin || err
+	sudo chown root:staff /opt/bin || err
+	sudo chmod -R 770 /opt/bin || err
+	{ set +x; } 2>/dev/null
+fi
+
+#------------------------------------------------------------------------------
+step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin"
 set -x
-sudo touch /mnt/sda1/tce/mydata.tgz || err
+sudo sh -c 'echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> ~/.ashrc' || err
 { set +x; } 2>/dev/null
 ok
 
-echo "Update persistence list"
-set -x
-# persist users accounts
-sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
-sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
-{ set +x; } 2>/dev/null
-ok
+#------------------------------------------------------------------------------
+step "Create script: /opt/sbin/shutdown (with persistence support)"
+if [ -f /opt/sbin/shutdown ]
+then
+	echo -e "/opt/bin/shutdown already exists.\n";
+else
+	set -x
+	sudo sh -c 'echo "#!/bin/sh
+	sudo /usr/bin/filetool.sh -b
+	sudo /opt/shutdown.sh
+	sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
+	{ set +x; } 2>/dev/null
+	ok
+fi
 
-echo "Creating /opt/bin and /opt/sbin for custom global scripts (persisted)"
-set -x
-sudo mkdir /opt/sbin || err
-sudo chown root:staff /opt/sbin || err
-sudo chmod -R 740 /opt/sbin || err
-sudo mkdir /opt/bin || err
-sudo chown root:staff /opt/bin || err
-sudo chmod -R 770 /opt/bin || err
-{ set +x; } 2>/dev/null
-ok
+#------------------------------------------------------------------------------
+step "Create script: /opt/sbin/reboot (with persistence support)"
+if [ -f /opt/sbin/reboot ]
+then
+	echo -e "/opt/bin/reboot already exists.\n";
+else
+	set -x
+	sudo sh -c 'echo "#!/bin/sh
+	sudo /usr/bin/filetool.sh -b
+	sudo /opt/shutdown.sh
+	sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
+	{ set +x; } 2>/dev/null
+	ok
+fi
 
-echo "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin"
-set -x
-sudo sh -c 'echo "export PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> /opt/bootlocal.sh' || err
-{ set +x; } 2>/dev/null
-ok
-
-echo "Create script: /opt/sbin/shutdown (with persistence support)"
-set -x
-sudo sh -c 'echo "#!/bin/sh
-sudo /usr/bin/filetool.sh -b
-sudo /opt/shutdown.sh
-sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
-{ set +x; } 2>/dev/null
-ok
-
-echo "Create script: /opt/sbin/reboot (with persistence support)"
-set -x
-sudo sh -c 'echo "#!/bin/sh
-sudo /usr/bin/filetool.sh -b
-sudo /opt/shutdown.sh
-sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
-{ set +x; } 2>/dev/null
-ok
-
-echo "Backup changes"
+#------------------------------------------------------------------------------
+step "Backup changes"
 set -x
 filetool.sh -b
 { set +x; } 2>/dev/null
