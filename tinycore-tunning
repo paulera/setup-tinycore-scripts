@@ -1,12 +1,17 @@
 ###############################################################################
 #
-# This does some tunning in a Tiny Core Linux installation:
+# This script does some tunning in a Tiny Core Linux installation:
 #
-# Download and run this script:
+# To download this script, use tinycore-scripts-download:
 #
 #         tce-load -w -i openssl.tcz                  <- enable ssl (for https)
-#         wget git.io/tinycore-tunning                <- download script
-#         sh tinycore-tunning                         <- run
+#         mkdir /opt/tinycore-scripts
+#         cd /opt/tinycore-scripts
+#         wget git.io/tinycore-scripts-download       <- download script
+#         sh tinycore-scripts-download                <- run
+#
+# To run, after downloading it do
+#         sh tinycore-tunning
 #
 # What tinycore-tunning does:
 #    - Setup persistence, including user accounts
@@ -55,11 +60,11 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Update persistence list\\n"
+step "Update persistence list including passwd and shadow files\\n"
 
 if [ ! -z "$(cat /opt/.filetool.lst | grep etc/passwd)" ]
 then
-	echo "etc/passwd already included in /opt/.filetool.lst\\n"
+	echo "etc/passwd already in /opt/.filetool.lst\\n"
 else
   set -x
   sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
@@ -69,7 +74,7 @@ fi
 
 if [ ! -z "$(cat /opt/.filetool.lst | grep etc/shadow)" ]
 then
-	echo "etc/shadow already included in /opt/.filetool.lst\\n"
+	echo "etc/shadow already in /opt/.filetool.lst\\n"
 else
   set -x
   sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
@@ -107,7 +112,11 @@ fi
 #------------------------------------------------------------------------------
 step "Add entries to \$PATH: ~/bin;/opt/sbin;/opt/bin\\n"
 set -x
-sudo sh -c 'echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> ~/.ashrc' || err
+for i in /home; do
+	echo Updating .ashrc in /home/$i
+	echo -e "\n#Added by tinycore-scripts\nexport PATH=~/bin;/opt/sbin;/opt/bin;\$PATH" >> /home/$i/.ashrc || err
+loop
+
 { set +x; } 2>/dev/null
 ok
 
