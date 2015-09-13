@@ -56,24 +56,25 @@ fi
 
 #------------------------------------------------------------------------------
 step "Update persistence list\\n"
-if [ -z "$(cat /opt/.filetool.lst | grep etc/passwd)" ]
+
+if [ ! -z "$(cat /opt/.filetool.lst | grep etc/passwd)" ]
 then
-	set -x
-	sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
-	{ set +x; } 2>/dev/null
-	ok
+	echo "etc/passwd already included in /opt/.filetool.lst\\n"
 else
-	echo "etc/passwd already included in /opt/.filetool.lst\n"
+  set -x
+  sudo sh -c 'echo "etc/passwd" >> /opt/.filetool.lst' || err
+  { set +x; } 2>/dev/null
+  ok
 fi
 
-if [ -z "$(cat /opt/.filetool.lst | grep etc/shadow)" ]
+if [ ! -z "$(cat /opt/.filetool.lst | grep etc/shadow)" ]
 then
-	set -x
-	sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
-	{ set +x; } 2>/dev/null
-	ok
+	echo "etc/shadow already included in /opt/.filetool.lst\\n"
 else
-	echo "etc/shadow already included in /opt/.filetool.lst\n"
+  set -x
+  sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
+  { set +x; } 2>/dev/null
+  ok	
 fi
 
 #------------------------------------------------------------------------------
@@ -83,24 +84,24 @@ if [ -d /opt/sbin ]
 then
 	echo "/opt/sbin already exists.";
 else
-	set -x
-	sudo mkdir /opt/sbin || err
-	sudo chown root:staff /opt/sbin || err
-	sudo chmod -R 740 /opt/sbin || err
-	{ set +x; } 2>/dev/null
-	ok
+  set -x
+  sudo mkdir /opt/sbin || err
+  sudo chown root:staff /opt/sbin || err
+  sudo chmod -R 740 /opt/sbin || err
+  { set +x; } 2>/dev/null
+  ok
 fi
 
 if [ -d /opt/bin ]
 then
 	echo -e "/opt/bin already exists.\n";
 else
-	set -x
-	sudo mkdir /opt/bin || err
-	sudo chown root:staff /opt/bin || err
-	sudo chmod -R 770 /opt/bin || err
-	{ set +x; } 2>/dev/null
-	ok
+  set -x
+  sudo mkdir /opt/bin || err
+  sudo chown root:staff /opt/bin || err
+  sudo chmod -R 770 /opt/bin || err
+  { set +x; } 2>/dev/null
+  ok
 fi
 
 #------------------------------------------------------------------------------
@@ -116,13 +117,13 @@ if [ -f /opt/sbin/shutdown ]
 then
 	echo -e "/opt/bin/shutdown already exists.\n";
 else
-	set -x
-	sudo sh -c 'echo "#!/bin/sh
-	sudo /usr/bin/filetool.sh -b
-	sudo /opt/shutdown.sh
-	sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
-	{ set +x; } 2>/dev/null
-	ok
+  set -x
+  sudo sh -c 'echo "#!/bin/sh
+  sudo /usr/bin/filetool.sh -b
+  sudo /opt/shutdown.sh
+  sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
+  { set +x; } 2>/dev/null
+  ok
 fi
 
 #------------------------------------------------------------------------------
@@ -131,13 +132,13 @@ if [ -f /opt/sbin/reboot ]
 then
 	echo -e "/opt/bin/reboot already exists.\n";
 else
-	set -x
-	sudo sh -c 'echo "#!/bin/sh
-	sudo /usr/bin/filetool.sh -b
-	sudo /opt/shutdown.sh
-	sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
-	{ set +x; } 2>/dev/null
-	ok
+  set -x
+  sudo sh -c 'echo "#!/bin/sh
+  sudo /usr/bin/filetool.sh -b
+  sudo /opt/shutdown.sh
+  sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
+  { set +x; } 2>/dev/null
+  ok
 fi
 
 #------------------------------------------------------------------------------
