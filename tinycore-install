@@ -56,9 +56,9 @@ read -p "Continue (y/n)? " -n 1 -r
 echo
 echo
 
-TOTAL=10
-
 if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
+
+	TOTAL=10
 
 	# ------------------------------------
 	step "1 of $TOTAL. Create partition\n"
@@ -184,7 +184,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	{ set +x; } 2>/dev/null
 	ok
 
-	echo Script: /opt/sbin/shutdown (with persistence)
+	echo "Script: /opt/sbin/shutdown (with persistence)"
 	set -x
 	sudo sh -c 'echo "#!/bin/sh
 /usr/bin/filetool.sh -b
@@ -193,7 +193,7 @@ sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin' || err
 	{ set +x; } 2>/dev/null
 	ok
 
-	echo Script: /opt/sbin/reboot (with persistence)
+	echo "Script: /opt/sbin/reboot (with persistence)"
 	set -x
 	sudo sh -c 'echo "#!/bin/sh
 /usr/bin/filetool.sh -b
@@ -211,7 +211,7 @@ sudo /usr/bin/exitcheck.sh reboot" > /opt/bin' || err
 	{ set +x; } 2>/dev/null
 	ok
 
-	echo Update persistence list
+	echo "Update persistence list"
 	set -x
 	# persist users accounts
 	sudo echo etc/passwd >>/opt/.filetool.lst || err
