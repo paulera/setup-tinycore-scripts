@@ -154,7 +154,7 @@ if [[ "$REPLY" = "Y" ]] || [[ "$REPLY" = "y" ]]; then
 	echo "        opt=sda1 home=sda1"
 
 	set -x
-	sudo sh -c 'echo -e "default 0\ntimeout 0\ntitle MicroCore\nkernel /boot/vmlinuz opt=sda1 home=sda1\ninitrd /boot/core.gz" > /mnt/sda1/boot/grub/menu.lst'  || err
+	sudo sh -c 'echo -e "default 0\ntimeout 0\ntitle MicroCore\nkernel /boot/vmlinuz quiet opt=sda1 home=sda1\ninitrd /boot/core.gz" > /mnt/sda1/boot/grub/menu.lst'  || err
 	{ set +x; } 2>/dev/null
 	ok
 
