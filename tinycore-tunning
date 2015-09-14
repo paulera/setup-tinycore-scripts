@@ -147,20 +147,18 @@ then
 	set -x
 	sudo sh -c "echo -e \"\nexport PATH=\\\"~/bin:/opt/sbin:/opt/bin:\\\\\\\$PATH\\\"      # PATH change by tinycore-scripts\" >> /etc/skel/.ashrc" || err
 	{ set +x; } 2>/dev/null
-
-	if [ ! -z "$(cat /opt/.filetool.lst | grep etc/skel/.ashrc)" ]
-	then
-		echo -e "etc/skel/.ashrc already in /opt/.filetool.lst\n"
-	else
-	  set -x
-	  sudo sh -c 'echo "etc/skel/.ashrc" >> /opt/.filetool.lst' || err
-	  { set +x; } 2>/dev/null
-	  ok
-	fi
-
 	ok
-
 fi
+
+if [ -z "$(cat /opt/.filetool.lst | grep etc/skel/.ashrc)" ]
+then
+	echo "Persisting etc/skel/.ashrc"
+	set -x
+	sudo sh -c 'echo "etc/skel/.ashrc" >> /opt/.filetool.lst' || err
+	{ set +x; } 2>/dev/null
+	ok
+fi
+
 
 
 #------------------------------------------------------------------------------
