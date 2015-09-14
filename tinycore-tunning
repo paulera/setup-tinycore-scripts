@@ -87,7 +87,7 @@ step "Creating /opt/bin and /opt/sbin for custom global scripts (persisted)\\n"
 
 if [ -d /opt/sbin ]
 then
-	echo "/opt/sbin already exists.";
+	echo -e "/opt/sbin already exists.\n";
 else
   set -x
   sudo mkdir /opt/sbin || err
@@ -145,9 +145,21 @@ if [ -z "$(cat /etc/skel/.ashrc | grep PATH\ change\ by\ tinycore-scripts)" ]
 then
 	echo "Updating /etc/skel/.ashrc"
 	set -x
-	sudo sh -c "echo -e \"\nexport PATH=\\\"~/bin;/opt/sbin;/opt/bin;\\\\$PATH\\\"      # PATH change by tinycore-scripts\" >> /etc/skel/.ashrc" || err
+	sudo sh -c "echo -e \"\nexport PATH=\\\"~/bin;/opt/sbin;/opt/bin;\\\\\\$PATH\\\"      # PATH change by tinycore-scripts\" >> /etc/skel/.ashrc" || err
 	{ set +x; } 2>/dev/null
+
+	if [ ! -z "$(cat /opt/.filetool.lst | grep etc/skel/.ashrc)" ]
+	then
+		echo -e "etc/skel/.ashrc already in /opt/.filetool.lst\n"
+	else
+	  set -x
+	  sudo sh -c 'echo "etc/skel/.ashrc" >> /opt/.filetool.lst' || err
+	  { set +x; } 2>/dev/null
+	  ok
+	fi
+
 	ok
+
 fi
 
 

@@ -1,3 +1,23 @@
+###############################################################################
+#
+# This
+#
+# Download and run this script:
+#
+#         tce-load -w -i openssl.tcz                  <- enable ssl (for https)
+#         wget git.io/tinycore-tunning                <- download script
+#         sh tinycore-tunning                         <- run
+#
+# What tinycore-tunning does:
+#    - Setup persistence, including user accounts
+#    - Create /opt/bin and /opt/sbin to store custom scripts
+#    - Create the scripts 'shutdown' and 'reboot' (they backup before turn off)
+# 
+# Credits:
+# By paulo.amaral(a)gmail(dot)com - https://github.com/paulera
+#
+###############################################################################
+
 #!/bin/sh
 
 BASE_URL=https://raw.githubusercontent.com/paulera/setup-tinycore-scripts/master
@@ -21,7 +41,6 @@ for i in `wget -qO- https://api.github.com/repos/$USER/$REPO/contents/ | cat | \
 	grep \"download_url\" | \
 	grep -i -v readme.md | \
 	grep -i -v tinycore-install | \
-	grep -i -v tinycore-scripts-download | \
 	sed 's/[ ]\+"download_url": "\(.*\)"[,]*/\1/g' \
 	`; do
 	echo "Downloading $i ..."
