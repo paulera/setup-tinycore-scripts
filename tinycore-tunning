@@ -150,8 +150,7 @@ then
 	ok
 fi
 
-
-if [ ! grep -Fxqe "etc/skel/.ashrc" /opt/.filetool.lst ]
+if [ -z "`grep -Fxqe "etc/skel/.ashrc" /opt/.filetool.lst`" ]
 then
 	echo "Persisting etc/skel/.ashrc"
 	set -x
@@ -159,8 +158,6 @@ then
 	{ set +x; } 2>/dev/null
 	ok
 fi
-
-
 
 #------------------------------------------------------------------------------
 step "Create script: /opt/bin/shutdown (with persistence support)\\n"
