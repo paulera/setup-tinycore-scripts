@@ -150,7 +150,7 @@ then
 	ok
 fi
 
-if [ -z "`grep -Fxqe "etc/skel/.ashrc" /opt/.filetool.lst`" ]
+if [ "`grep -Fx "etc/skel/.ashrc" /opt/.filetool.lst`" == "" ]
 then
 	echo "Persisting etc/skel/.ashrc"
 	set -x
