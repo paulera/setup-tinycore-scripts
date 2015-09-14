@@ -4,5 +4,5 @@ LINE="echo \"booting\" > /etc/sysconfig/noautologin"
 FILE="/opt/bootsync.sh"
 if [ "`grep -Fx "$LINE" $FILE`" == "" ]
 then
-	echo "$LINE >> $FILE    # added by tinycore-scripts"
+	echo "$LINE    # added by tinycore-scripts" >> $FILE
 fi
