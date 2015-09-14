@@ -115,8 +115,8 @@ for i in /home/* ; do
 	if [ -d $i ]; then
 		echo Updating $i/.ashrc
 		set -x
-		sudo sed -i '/^.*added by tinycore-scripts.*/d' $i/.ashrc
-  echo -e "\nexport PATH=\"\$PATH:/opt/bin:/opt/sbin:~/bin\"      # added by tinycore-scripts" >> $i/.ashrc || err
+		sudo sed -i '/^.*PATH change by tinycore-scripts.*/d' $i/.ashrc
+  echo -e "\nexport PATH=\"\$PATH:/opt/bin:/opt/sbin:~/bin\"      # PATH change by tinycore-scripts" >> $i/.ashrc || err
 		{ set +x; } 2>/dev/null
 		ok
 	fi
@@ -136,7 +136,7 @@ if [ ! -z "$(cat /etc/skel/.ashrc | grep PATH\ change\ by\ tinycore-scripts)" ]
 then
 	echo "Removing old entry fron /etc/skel/.ashrc"
 	set -x
-	sudo sed -i '/^.*added by tinycore-scripts.*/d' /etc/skel/.ashrc
+	sudo sed -i '/^.*PATH change by tinycore-scripts.*/d' /etc/skel/.ashrc
 	{ set +x; } 2>/dev/null
 	ok
 fi
@@ -145,7 +145,7 @@ if [ -z "$(cat /etc/skel/.ashrc | grep PATH\ change\ by\ tinycore-scripts)" ]
 then
 	echo "Updating /etc/skel/.ashrc"
 	set -x
-	sudo sh -c "echo -e \"\nexport PATH=\\\"\\\$PATH:/opt/bin:/opt/sbin:~/bin\\\"      # added by tinycore-scripts\" >> /etc/skel/.ashrc" || err
+	sudo sh -c "echo -e \"\nexport PATH=\\\"\\\$PATH:/opt/bin:/opt/sbin:~/bin\\\"      # PATH change by tinycore-scripts\" >> /etc/skel/.ashrc" || err
 	{ set +x; } 2>/dev/null
 	ok
 fi

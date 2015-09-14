@@ -44,7 +44,7 @@ for i in `wget -qO- https://api.github.com/repos/$USER/$REPO/contents/ | cat | \
 	sed 's/[ ]\+"download_url": "\(.*\)"[,]*/\1/g' \
 	`; do
 	echo "Downloading $i ..."
-	wget -q $i
+	wget --no-cache -q $i
 done
 cd ..
 cp $TMP/* . && rm -r $TMP
