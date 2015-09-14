@@ -24,12 +24,17 @@ echo
 
 # --------------------------------------------------------------------
 step "Installing Open SSH package"
-sudo tce-load -w -i openssh.tcz
+tce-load -w -i openssh.tcz || err
 ok
 
 step "Backup original config files"
 sudo cp /usr/local/etc/ssh/sshd_config /usr/local/etc/ssh/sshd_config.original || err
 sudo cp /usr/local/etc/ssh/ssh_config /usr/local/etc/ssh/ssh_config.original || err
+sudo mv /usr/local/etc/ssh/sshd_config /usr/local/etc/ssh/sshd_config2 || err
+sudo mv /usr/local/etc/ssh/ssh_config /usr/local/etc/ssh/ssh_config2 || err
+sudo cp /usr/local/etc/ssh/sshd_config.original /usr/local/etc/ssh/sshd_config || err
+sudo cp /usr/local/etc/ssh/ssh_config.original /usr/local/etc/ssh/ssh_config || err
+
 ok
 
 step "Persist whole ssh folder to keep configuration and keys"
@@ -45,6 +50,8 @@ fi
 
 echo "ifconfig eth0 up    # added by tinycore-scripts" >> /opt/bootlocal.sh
 echo "/usr/local/etc/init.d/openssh start     # added by tinycore-scripts" >> /opt/bootlocal.sh
+
+/usr/local/etc/init.d/openssh start
 
 #------------------------------------------------------------------------------
 step "Backup changes\\n"
