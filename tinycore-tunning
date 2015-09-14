@@ -170,6 +170,7 @@ else
   sudo /usr/bin/filetool.sh -b
   sudo /opt/shutdown.sh
   sudo /usr/bin/exitcheck.sh shutdown" > /opt/bin/shutdown' || err
+  chmod 750 /opt/bin/shutdown
   { set +x; } 2>/dev/null
   ok
 fi
@@ -185,6 +186,7 @@ else
   sudo /usr/bin/filetool.sh -b
   sudo /opt/shutdown.sh
   sudo /usr/bin/exitcheck.sh reboot" > /opt/bin/reboot' || err
+  chmod 750 /opt/bin/reboot
   { set +x; } 2>/dev/null
   ok
 fi

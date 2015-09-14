@@ -32,44 +32,16 @@ sudo cp /usr/local/etc/ssh/sshd_config /usr/local/etc/ssh/sshd_config.original |
 sudo cp /usr/local/etc/ssh/ssh_config /usr/local/etc/ssh/ssh_config.original || err
 ok
 
-step "Persist files"
+step "Persist ssh folder"
 
-if [ "`grep -Fx "usr/local/etc/ssh/sshd_config" /opt/.filetool.lst`" == "" ]
+if [ "`grep -Fx "usr/local/etc/ssh" /opt/.filetool.lst`" == "" ]
 then
-	echo "Persisting usr/local/etc/ssh/sshd_config"
-	sudo sh -c 'echo "usr/local/etc/ssh/sshd_config" >> /opt/.filetool.lst'
+	echo "Persisting usr/local/etc/ssh"
+	sudo sh -c 'echo "usr/local/etc/ssh" >> /opt/.filetool.lst'
 	ok
 else
-	echo "usr/local/etc/ssh/sshd_config already persisted"
+	echo "usr/local/etc/ssh already persisted"
 fi
-
-if [ "`grep -Fx "usr/local/etc/ssh/sshd_config.original" /opt/.filetool.lst`" == "" ]
-then
-	echo "Persisting usr/local/etc/ssh/sshd_config.original"
-	sudo sh -c 'echo "usr/local/etc/ssh/sshd_config.original" >> /opt/.filetool.lst'
-	ok
-else
-	echo "usr/local/etc/ssh/sshd_config.original already persisted"
-fi
-
-if [ "`grep -Fx "usr/local/etc/ssh/ssh_config" /opt/.filetool.lst`" == "" ]
-then
-	echo "Persisting usr/local/etc/ssh/ssh_config"
-	sudo sh -c 'echo "usr/local/etc/ssh/ssh_config" >> /opt/.filetool.lst' || err
-	ok
-else
-	echo "usr/local/etc/ssh/ssh_config already persisted"
-fi
-
-if [ "`grep -Fx "usr/local/etc/ssh/ssh_config.original" /opt/.filetool.lst`" == "" ]
-then
-	echo "Persisting usr/local/etc/ssh/ssh_config.original"
-	sudo sh -c 'echo "usr/local/etc/ssh/ssh_config.original" >> /opt/.filetool.lst' || err
-	ok
-else
-	echo "usr/local/etc/ssh/ssh_config.original already persisted"
-fi
-ok
 
 #------------------------------------------------------------------------------
 step "Backup changes\\n"
