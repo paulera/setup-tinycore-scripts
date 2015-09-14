@@ -1,0 +1,79 @@
+step() {
+	echo -e "\e[1;36m+++ $1\e[0m";
+}
+
+ok() {
+	echo -e "\e[32m[success] \e[0m\n";
+}
+
+err() {
+	{ set +x; } 2>/dev/null
+	echo -e "\n\e[1;31mERROR! Check last command output for details.\e[0m";
+	echo -e "\nInstallation aborted.\n";
+	exit 1
+}
+
+pause() {
+	echo -e "\e[1;30mPress [return] for next step...\e[0m"
+	read
+}
+
+echo
+
+# --------------------------------------------------------------------
+step "Installing Open SSH package"
+sudo tce-load -w -i openssh.tcz
+ok
+
+step "Backup original config files"
+sudo cp /usr/local/etc/ssh/sshd_config /usr/local/etc/ssh/sshd_config.original || err
+sudo cp /usr/local/etc/ssh/ssh_config /usr/local/etc/ssh/ssh_config.original || err
+ok
+
+step "Persist files"
+
+if [ "`grep -Fx "usr/local/etc/ssh/sshd_config" /opt/.filetool.lst`" == "" ]
+then
+	echo "Persisting usr/local/etc/ssh/sshd_config"
+	sudo sh -c 'echo "usr/local/etc/ssh/sshd_config" >> /opt/.filetool.lst'
+	ok
+else
+	echo "usr/local/etc/ssh/sshd_config already persisted"
+fi
+
+if [ "`grep -Fx "usr/local/etc/ssh/sshd_config.original" /opt/.filetool.lst`" == "" ]
+then
+	echo "Persisting usr/local/etc/ssh/sshd_config.original"
+	sudo sh -c 'echo "usr/local/etc/ssh/sshd_config.original" >> /opt/.filetool.lst'
+	ok
+else
+	echo "usr/local/etc/ssh/sshd_config.original already persisted"
+fi
+
+if [ "`grep -Fx "usr/local/etc/ssh/ssh_config" /opt/.filetool.lst`" == "" ]
+then
+	echo "Persisting usr/local/etc/ssh/ssh_config"
+	sudo sh -c 'echo "usr/local/etc/ssh/ssh_config" >> /opt/.filetool.lst' || err
+	ok
+else
+	echo "usr/local/etc/ssh/ssh_config already persisted"
+fi
+
+if [ "`grep -Fx "usr/local/etc/ssh/ssh_config.original" /opt/.filetool.lst`" == "" ]
+then
+	echo "Persisting usr/local/etc/ssh/ssh_config.original"
+	sudo sh -c 'echo "usr/local/etc/ssh/ssh_config.original" >> /opt/.filetool.lst' || err
+	ok
+else
+	echo "usr/local/etc/ssh/ssh_config.original already persisted"
+fi
+ok
+
+#------------------------------------------------------------------------------
+step "Backup changes\\n"
+set -x
+filetool.sh -b
+{ set +x; } 2>/dev/null
+ok
+
+echo
