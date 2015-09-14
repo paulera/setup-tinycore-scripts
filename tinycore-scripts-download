@@ -39,8 +39,8 @@ mkdir $TMP
 cd $TMP
 for i in `wget -qO- https://api.github.com/repos/$USER/$REPO/contents/ | cat | \
 	grep \"download_url\" | \
-	grep -i -v readme.md | \
-	grep -i -v tinycore-install | \
+	grep -i -v "/readme.md\"" | \
+	grep -i -v "/tinycore-install\"", | \
 	sed 's/[ ]\+"download_url": "\(.*\)"[,]*/\1/g' \
 	`; do
 	echo "Downloading $i ..."
