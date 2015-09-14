@@ -60,7 +60,8 @@ else
 fi
 
 #------------------------------------------------------------------------------
-step "Update persistence list including passwd and shadow files\\n"
+step "Update persistence list including credentials files\\n"
+
 
 if [ ! -z "$(cat /opt/.filetool.lst | grep etc/passwd)" ]
 then
@@ -80,6 +81,26 @@ else
   sudo sh -c 'echo "etc/shadow" >> /opt/.filetool.lst' || err
   { set +x; } 2>/dev/null
   ok	
+fi
+
+if [ ! -z "$(cat /opt/.filetool.lst | grep etc/group)" ]
+then
+	echo -e "etc/group already in /opt/.filetool.lst\n"
+else
+  set -x
+  sudo sh -c 'echo "etc/group" >> /opt/.filetool.lst' || err
+  { set +x; } 2>/dev/null
+  ok
+fi
+
+if [ ! -z "$(cat /opt/.filetool.lst | grep etc/gshadow)" ]
+then
+	echo -e "etc/gshadow already in /opt/.filetool.lst\n"
+else
+  set -x
+  sudo sh -c 'echo "etc/gshadow" >> /opt/.filetool.lst' || err
+  { set +x; } 2>/dev/null
+  ok
 fi
 
 #------------------------------------------------------------------------------
