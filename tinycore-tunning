@@ -150,7 +150,8 @@ then
 	ok
 fi
 
-if [ -z "$(cat /opt/.filetool.lst | grep etc/skel/.ashrc)" ]
+
+if [ ! grep -Fxqe "etc/skel/.ashrc" /opt/.filetool.lst ]
 then
 	echo "Persisting etc/skel/.ashrc"
 	set -x
