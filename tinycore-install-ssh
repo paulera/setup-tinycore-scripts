@@ -51,7 +51,7 @@ fi
 echo "ifconfig eth0 up    # added by tinycore-scripts" >> /opt/bootlocal.sh
 echo "/usr/local/etc/init.d/openssh start     # added by tinycore-scripts" >> /opt/bootlocal.sh
 
-/usr/local/etc/init.d/openssh start
+sudo /usr/local/etc/init.d/openssh start
 
 #------------------------------------------------------------------------------
 step "Backup changes\\n"
