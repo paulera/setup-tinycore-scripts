@@ -32,7 +32,7 @@ sudo cp /usr/local/etc/ssh/sshd_config /usr/local/etc/ssh/sshd_config.original |
 sudo cp /usr/local/etc/ssh/ssh_config /usr/local/etc/ssh/ssh_config.original || err
 ok
 
-step "Persist ssh folder"
+step "Persist whole ssh folder to keep configuration and keys"
 
 if [ "`grep -Fx "usr/local/etc/ssh" /opt/.filetool.lst`" == "" ]
 then
@@ -42,6 +42,9 @@ then
 else
 	echo "usr/local/etc/ssh already persisted"
 fi
+
+echo "ifconfig eth0 up    # added by tinycore-scripts" >> /opt/bootlocal.sh
+echo "/usr/local/etc/init.d/openssh start     # added by tinycore-scripts" >> /opt/bootlocal.sh
 
 #------------------------------------------------------------------------------
 step "Backup changes\\n"

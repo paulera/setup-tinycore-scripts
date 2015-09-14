@@ -1,0 +1,8 @@
+#!/bin/sh
+
+$LINE="echo \"booting\" > /etc/sysconfig/noautologin"
+$FILE="/opt/bootsync.sh"
+if [ "`grep -Fx "$LINE" $FILE`" == "" ]
+then
+	echo $LINE >> $FILE
+fi
