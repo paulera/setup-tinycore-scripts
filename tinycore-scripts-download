@@ -1,17 +1,21 @@
 ###############################################################################
 #
-# This
+# This script download all other scripts so it should be used as second step,
+# after using 'tinycore-install'. Then you should be good to easily tune
+# the server.
+#
+# It can also be used to update the scripts to the latest version.
 #
 # Download and run this script:
 #
+#         mkdir /opt/tinycore-scripts                 <- place to store files
+#         cd /opt/tinycore-scripts
 #         tce-load -w -i openssl.tcz                  <- enable ssl (for https)
-#         wget git.io/tinycore-tunning                <- download script
-#         sh tinycore-tunning                         <- run
+#         wget git.io/tinycore-scripts-download       <- download this script
+#         sh tinycore-scripts-download                <- run
 #
-# What tinycore-tunning does:
-#    - Setup persistence, including user accounts
-#    - Create /opt/bin and /opt/sbin to store custom scripts
-#    - Create the scripts 'shutdown' and 'reboot' (they backup before turn off)
+# What tinycore-scripts-download does:
+#    - Download all other scripts to the working directory
 # 
 # Credits:
 # By paulo.amaral(a)gmail(dot)com - https://github.com/paulera
